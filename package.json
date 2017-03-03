@@ -1,0 +1,14 @@
+{
+  "name": "yEd-flowchart-parser",
+  "version": "1.0.0",
+  "description": "Parses a flowchart in yEd graphml format into a JSON that can be easily used by a front-end to assist a user in troubleshooting.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eric King",
+  "license": "ISC",
+  "dependencies": {
+    "xml2js": "^0.4.17"
+  }
+}
