@@ -62,13 +62,13 @@ function organize(graphml,callback){
 			}
 		}
 		
-		var next = {}, prev = {};
+		var next = [], prev = [];
 		
 		graph.graph.edge.forEach(function(edge,ind,edgez){
 			var edgeType = "";
 			
 			if(edge.target === node.id){
-				prev[edge.source] = {label:'Back',edge:edge.id};
+				prev.push({target:edge.target,label:'Back',edge:edge.id});
 			}
 			if(edge.source === node.id){
 
@@ -84,12 +84,12 @@ function organize(graphml,callback){
 							}
 							
 							if(datum[edgeType] && datum[edgeType].edgeLabel){
-								next[edge.target] = {label:datum[edgeType].edgeLabel['_'].trim(),edge:edge.id};
+								next.push({target:edge.target,label:datum[edgeType].edgeLabel['_'].trim(),edge:edge.id});
 								break;
 							} else if(datum[edgeType]){
-								next[edge.target] = {label:'NA',edge:edge.id};
+								next.push({target:edge.target,label:'NA',edge:edge.id});
 							} else {
-								next[edge.target] = {label:'NA',edge:edge.id};
+								next.push({target:edge.target,label:'NA',edge:edge.id});
 							}
 						}
 					} else {
@@ -99,15 +99,15 @@ function organize(graphml,callback){
 							}
 						}
 						if(edge.data[edgeType] && edge.data[edgeType].edgeLabel){
-							next[edge.target] = {label:edge.data[edgeType].edgeLabel['_'].trim(),edge:edge.id};
+							next.push({target:edge.target,label:edge.data[edgeType].edgeLabel['_'].trim(),edge:edge.id});
 						} else if(edge.data[edgeType]){
-							next[edge.target] = {label:'NA',edge:edge.id};
+							next.push({target:edge.target,label:'NA',edge:edge.id});
 						} else {
-							next[edge.target] = {label:'NA',edge:edge.id};
+							next.push({target:edge.target,label:'NA',edge:edge.id});
 						}
 					}
 				} else {
-					next[edge.target] = {label:'Continue',edge:edge.id};
+					next.push({target:edge.target,label:'Continue',edge:edge.id});
 				}
 			}
 
@@ -164,7 +164,7 @@ function FlowTrouble(xml,callback){
 		} else {
 			
 		}
-	}
+	};
 	
 	var next = function(callback){
 		callback = (typeof callback === 'function') ? callback : function() {};
@@ -174,7 +174,7 @@ function FlowTrouble(xml,callback){
 		} else {
 			
 		}
-	}
+	};
 	
 	var prev = function(callback){
 		callback = (typeof callback === 'function') ? callback : function() {};
@@ -184,7 +184,7 @@ function FlowTrouble(xml,callback){
 		} else {
 			
 		}
-	}
+	};
 	
 	var end = function(callback){
 		callback = (typeof callback === 'function') ? callback : function() {};
@@ -194,7 +194,7 @@ function FlowTrouble(xml,callback){
 		} else {
 			
 		}
-	}
+	};
 	
 	var printRaw = function(){
 		graphml.key.forEach(function(key,ind,keys){
@@ -226,7 +226,7 @@ function FlowTrouble(xml,callback){
 				console.dir(edge.data);	
 			}
 		});	
-	}
+	};
 	
 	var printFlow = function(){
 		for(var f in flowchart){
@@ -237,14 +237,14 @@ function FlowTrouble(xml,callback){
 			}
 			console.log('}');
 		}
-	}
+	};
 	
 	var printOrg = function(){
 		for(var g in graph){
 			console.log(g+': ');
 			console.dir(graph[g]);
 		}
-	}
+	};
 	
 	return {
 		start: start,
@@ -254,7 +254,7 @@ function FlowTrouble(xml,callback){
 		printRaw: printRaw,
 		printFlow: printFlow,
 		printOrg: printOrg
-	}
+	};
 }
 
 module.exports = FlowTrouble;
