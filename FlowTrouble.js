@@ -63,7 +63,8 @@ function organize(graphml,callback){
 			}
 		}
 		
-		var next = [], prev = [];
+		var next = [], nextChk = {},
+		prev = [], prevChk = {};
 		
 		// Loop through the edges and place the data into their respective nodes.
 		
@@ -71,10 +72,16 @@ function organize(graphml,callback){
 			var edgeType = "";
 			
 			if(edge.target === node.id){
-				prev.push({target:edge.source,label:'Back',edge:edge.id});
+				prevChk[edge.source] = false;
+				
+				if(!prevChk[edge.source]){
+					prev.push({target:edge.source,label:'Back',edge:edge.id});
+					prevChk[edge.source] = true;
+				}
+				
 			}
 			if(edge.source === node.id){
-
+				nextChk[edge.target] = false;
 				if(type === 'decision'){
 					if(Array.isArray(edge.data)){
 						for(var d in edge.data){
@@ -86,13 +93,18 @@ function organize(graphml,callback){
 								}
 							}
 							
-							if(datum[edgeType] && datum[edgeType].edgeLabel){
+							if(datum[edgeType] && datum[edgeType].edgeLabel && !nextChk[edge.target]){
 								next.push({target:edge.target,label:datum[edgeType].edgeLabel['_'].trim(),edge:edge.id});
+								nextChk[edge.target] = true;
 								break;
-							} else if(datum[edgeType]){
+							} else if(datum[edgeType] && !nextChk[edge.target]){
 								next.push({target:edge.target,label:'NA',edge:edge.id});
+								nextChk[edge.target] = true;
 							} else {
-								next.push({target:edge.target,label:'NA',edge:edge.id});
+								if(!nextChk[edge.target]){
+									next.push({target:edge.target,label:'NA',edge:edge.id});
+									nextChk[edge.target] = true;
+								}
 							}
 						}
 					} else {
@@ -101,12 +113,17 @@ function organize(graphml,callback){
 								edgeType = d;	
 							}
 						}
-						if(edge.data[edgeType] && edge.data[edgeType].edgeLabel){
+						if(edge.data[edgeType] && edge.data[edgeType].edgeLabel && !nextChk[edge.target]){
 							next.push({target:edge.target,label:edge.data[edgeType].edgeLabel['_'].trim(),edge:edge.id});
-						} else if(edge.data[edgeType]){
+							nextChk[edge.target] = true;
+						} else if(edge.data[edgeType] && !nextChk[edge.target]){
 							next.push({target:edge.target,label:'NA',edge:edge.id});
+							nextChk[edge.target] = true;
 						} else {
-							next.push({target:edge.target,label:'NA',edge:edge.id});
+							if(!nextChk[edge.target]){
+								next.push({target:edge.target,label:'NA',edge:edge.id});
+								nextChk[edge.target] = true;
+							}
 						}
 					}
 				} else {
