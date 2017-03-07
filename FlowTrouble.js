@@ -18,6 +18,7 @@ function organize(graphml,callback){
 	var keys = {};
 	var edges = {};
 	
+	// Loop through the nodes and place their relevant data 
 	graph.graph.node.forEach(function(node,ind,nodes){ 
 		var nodeType = "",type="";
 		if(Array.isArray(node.data)){
@@ -63,6 +64,8 @@ function organize(graphml,callback){
 		}
 		
 		var next = [], prev = [];
+		
+		// Loop through the edges and place the data into their respective nodes.
 		
 		graph.graph.edge.forEach(function(edge,ind,edgez){
 			var edgeType = "";
@@ -116,7 +119,8 @@ function organize(graphml,callback){
 			type:type,
 			label:lab,
 			next:next,
-			prev:prev
+			prev:prev,
+			data:node.data
 		};
 
 	});
