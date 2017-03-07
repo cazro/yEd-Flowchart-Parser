@@ -71,7 +71,7 @@ function organize(graphml,callback){
 			var edgeType = "";
 			
 			if(edge.target === node.id){
-				prev.push({target:edge.target,label:'Back',edge:edge.id});
+				prev.push({target:edge.source,label:'Back',edge:edge.id});
 			}
 			if(edge.source === node.id){
 
